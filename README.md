@@ -3,15 +3,13 @@
 A Python-based AI coding agent that can analyze, debug, and improve codebases using Google's Gemini API. This project demonstrates how to build an 
 intelligent assistant that can interact with your code through function calling and provide meaningful suggestions for improvements. 
 
-*Note*: I have used Gemini, but any LLM that provides an API key and free tier can be used.
+*Note*: I have used Gemini, but any LLM that provides an API key and free/paid tier can be used.
 
 ## Features
 
-- **Code Analysis**: Automatically analyzes Python files and identifies potential issues
-- **Bug Detection & Fixes**: Identifies bugs and provides detailed explanations and solutions
-- **Code Refactoring**: Suggests improvements for code structure and readability
-- **Interactive Debugging**: Engages in conversation about code issues and solutions
-- **File System Integration**: Can read and analyze multiple files in a project
+- **Code Analysis**: Analyzes Python files and identifies potential issues
+- **Bug Detection & Fixes**: Identifies bugs and fixes
+- **File System Integration**: Can read, write, edit and analyze multiple files in a project
 - **Function Calling**: Uses Gemini's function calling capabilities to interact with your codebase
 
 ## Prerequisites
@@ -60,27 +58,26 @@ User: How should I fix it?
 Agent: You should initialize 'count = 0' before the loop...
 ```
 
-## Configuration
-You can customize the agent's behavior by modifying the configuration in `config.py`:
-
-`MAX_FILES`: Maximum number of files to analyze
-`SUPPORTED_EXTENSIONS`: File types to include in analysis
-`MODEL_NAME`: Gemini model to use (default: gemini-pro)
-
 ## Project Structure
-        ├── main.py              # Main agent script
-        ├── requirements.txt     # Configuration settings
+        ├── main.py                 # Main agent script
+        ├── requirements.txt        # Configuration settings
         ├── functions/
-        |   ├── get_files_info.py
-            ├── function_caller.py
-            ├── get_file_content.py
-            ├── run_python_file.py
-            ├── write_file.py
-        │   ├── file_reader.py   # File system utilities
-        │   └── code_analyzer.py # Code analysis functions
-        ├── requirements.txt     # Python dependencies
-        ├── .env.example        # Environment variables template
-        └── README.md           # This file
+        |   ├── get_files_info.py   # function to identify a file or directory and list file size in bytes
+        |   ├── function_caller.py  # function provides the LLM the ability to call functions within your dir/
+        |   ├── get_file_content.py # function to rad content of file
+        |   ├── run_python_file.py  # function allows LLM to execute files
+        |   ├── write_file.py       # function allows LLM to wite and edit code or content within files
+        |
+        ├── calculator/             # An example file directory provided that can do basic math in CLI
+        |   ├── pkg/
+        |   ├── calculator.py       # Defines a calculator class that allows basic calculations
+        |   ├── render.py           # Renders a neat box around the calculations and output
+        |   ├── lorem.txt           # Some example files to check if LLM can manipulate basic text
+        |
+        ├── requirements.txt        # Python dependencies
+        ├── .env.example            # Environment variables template
+        ├── .gitignore              # add files to ignore from tracking
+        └── README.md               # This file
 
 ## Safety & Security
 ⚠️ **Important Security Notice**: This agent has access to read files in your project directory. Always:

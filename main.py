@@ -31,7 +31,11 @@ When a user asks a question or makes a request, make a function call plan. You c
 All paths you provide should be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected for security reasons.
 """
 model_name = 'gemini-2.5-flash'
-messages = [types.Content(role="user", parts=[types.Part(text=user_prompts)])]
+messages = [types.Content(
+    role="user", 
+    parts=[
+        types.Part(
+            text=user_prompts)])]
 
 
 #Schema for get_files_info
@@ -156,26 +160,39 @@ def call_function(function_call_part, verbose=False):
         ],
     )
 
-#LLM response collected here
-response = client.models.generate_content( model=model_name, 
-                                          contents=messages,
-                                          config=config,)
-print("Received response from Gemini API")
-# Check for verbose flag
-verbose = "--verbose" in sys.argv
+iteration_count = 1
+while iteration_count <= 20: #Iterate over model responses a maximum of 20 times
+    #LLM called here
+    response = client.models.generate_content( model=model_name, 
+                                            contents=messages,
+                                            config=config,)
 
-# Handle function calls or regular text response
-if response.function_calls != []:
-    for function_call_part in response.function_calls:
-        # Actually call the function instead of just printing
-        function_call_result = call_function(function_call_part, verbose)
-        
-        # Check that the result is valid (as required by lesson)
-        if not function_call_result.parts[0].function_response.response:
-            raise Exception("Function call failed")
-        
-        # Print result if verbose
-        if verbose:
-            print(f"-> {function_call_result.parts[0].function_response.response}")
-else:
-    print(response.text)
+    print(f"Iteration {iteration_count}: Model response structure - Text: {bool(response.text)}, Function Calls: {bool(response.function_calls)}")
+
+    #Iterate through LLM response variations and add to conversation history
+    for candidate in response.candidates:
+        messages.append(candidate.content)
+
+    # print("Received response from Gemini API")
+    # Check for verbose flag
+    verbose = "--verbose" in sys.argv
+    response.candidates
+    # Handle function calls or regular text response
+    if response.function_calls:
+        for function_call_part in response.function_calls:
+            # Actually call the function instead of just printing
+            function_call_result = call_function(function_call_part, verbose)
+            
+            #Add function call and it's result to conversation history
+            messages.append(function_call_result)
+            # Check that the result is valid (as required by lesson)
+            if not function_call_result.parts[0].function_response.response:
+                raise Exception("Function call failed")
+            
+            # Print result if verbose
+            if verbose:
+                print(f"-> {function_call_result.parts[0].function_response.response}")
+    else:
+        print(response.text)
+        break
+    iteration_count+= 1

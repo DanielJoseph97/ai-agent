@@ -1,5 +1,4 @@
-# calculator.py
-
+#Calculator class defined to allow for basic math in CLI
 class Calculator:
     def __init__(self):
         self.operators = {

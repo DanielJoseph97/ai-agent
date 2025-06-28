@@ -1,4 +1,5 @@
 import os
+#function to read contents of a file
 def get_file_content(working_directory, file_path):
     try:
         work_dir = os.path.abspath(working_directory)
@@ -10,7 +11,7 @@ def get_file_content(working_directory, file_path):
             return f"Error: File not found or is not a regular file: \"{file_path}\""
         
         MAX_CHARS = 10000
-
+        #limit can be set to whatever desired, keeping in mind LLM input tokens
         with open(file_path_dir, "r") as f:
             file_content_string = f.read(MAX_CHARS)
             if len(file_content_string) == MAX_CHARS:

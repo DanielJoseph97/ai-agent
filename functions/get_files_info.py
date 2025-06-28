@@ -1,13 +1,13 @@
 import os
-
+# function returns information about file or directory passed
 def get_files_info(working_directory, directory=None):
     try:
         work_dir = os.path.abspath(working_directory)
         if not directory:
-             current_dir= work_dir
+             current_dir= work_dir 
         else:
             current_dir = os.path.abspath(os.path.join(working_directory, directory))
-        
+            #handles joining paths of working dir with current dir /
         if current_dir.startswith(work_dir):    
             current_dir_contents = os.listdir(current_dir)
             current_dir_content = []

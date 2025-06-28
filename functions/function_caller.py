@@ -1,13 +1,13 @@
 import types
 from functions import get_file_content, get_files_info,  run_python_file, write_file
-
+#defining a function call for the LLM to use
 def call_function(function_call_part, verbose=False):
     if verbose:
         print(f"Calling function: {function_call_part.name}({function_call_part.args})")
     else:
         print(f" - Calling function: {function_call_part.name}")
 
-    #dictionary of functions
+    #dictionary of functions (list all funcs to be used)
     functions  = {
         "get_file_content": get_file_content,
         "get_files_info": get_files_info,

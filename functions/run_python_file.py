@@ -1,6 +1,7 @@
 import os
 import subprocess
 from subprocess import PIPE
+# Function runs a python file and returns output and errors if any
 def run_python_file(working_directory, file_path):
     try:
         if os.path.splitext(file_path)[1] != ".py":
@@ -14,7 +15,7 @@ def run_python_file(working_directory, file_path):
 
         if os.path.exists(file_path_dir) == False:
             return f"Error: File \"{file_path}\" not found."
-
+        #result is in bytes so decode back to string
         result = subprocess.run(["python3", file_path_dir], cwd= work_dir, timeout=30, stdout=PIPE, stderr=PIPE)
         result_stdout = result.stdout.decode('utf-8')
         result_stderr = result.stderr.decode('utf-8')

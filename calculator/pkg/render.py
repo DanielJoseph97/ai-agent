@@ -1,5 +1,4 @@
-# render.py
-
+#function renders a box around the calculation and output
 def render(expression, result):
     if isinstance(result, float) and result.is_integer():
         result_str = str(int(result))
